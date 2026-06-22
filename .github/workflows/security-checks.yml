@@ -1,0 +1,29 @@
+name: security-checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Brand / upstream leak gate
+        run: bash scripts/check-publish.sh
+
+      - name: Secret scan (API keys & tokens)
+        run: |
+          set -euo pipefail
+          if grep -rinE 'AIza[0-9A-Za-z_-]{30,}|sk-[a-zA-Z0-9]{32,}|ghp_[A-Za-z0-9]{30,}|xox[bap]-[0-9A-Za-z-]{10,}|-----BEGIN [A-Z ]*PRIVATE KEY' \
+               --include='*.ts' --include='*.tsx' --include='*.js' --include='*.json' --include='*.env*' . \
+               | grep -vE '/(node_modules|dist|build)/' \
+               | grep -v 'FAKE0TEST0PLACEHOLDER'; then
+            echo "::error::Potential secret detected — remove it before merging."
+            exit 1
+          fi
+          echo "✅ No secrets detected."
