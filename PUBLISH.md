@@ -46,3 +46,17 @@ own platform and expand later.
 
 > I can help configure the publishable package, but the **build + `npm publish` must run on your
 > machine** (needs bun + your npm login) — the server here has neither.
+
+## ✅ Build VERIFIED (2026-06-23, on the server)
+`bun install` (2417 pkgs) + `bun run --cwd packages/opencode build` succeeded. It produced
+platform binaries for all targets in `packages/opencode/dist/` (named **`nlc-cli-{platform}`** —
+linux/macos/windows × x64/arm64 + musl/baseline), and the build's own smoke test (`--version`)
+passed. The Linux binary runs: `nlc-cli-linux-x64/bin/opencode --version` → prints a version.
+
+Distribution model (opencode-style): per-platform binaries are uploaded to a **GitHub Release**,
+and a thin npm package fetches the right one on `npm install -g nlc-cli`. To ship:
+1. Set a real version (the build defaults to a dev timestamp); tag e.g. `v1.0.0`.
+2. Run the build with `GH_REPO=NexGerCore/nlc-cli` so it uploads binaries to the release (gh is authed).
+3. `npm login` and publish the launcher package (`npm publish` from `packages/opencode`).
+
+The hard part (it compiles + runs) is proven. Remaining = version + your `npm login`.
