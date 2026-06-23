@@ -9,7 +9,10 @@ Goal: let people run `npm install -g nlc-cli` then `nlc`, like `npm i -g @anthro
   publishable CLI lives in **`packages/opencode`** (bin `opencode`). It must be rebranded +
   built before publishing — it is NOT `npm install`-able yet.
 
-## Steps (run on a machine with bun + the build toolchain)
+## Already configured ✅
+In `packages/opencode/package.json`: name=`nlc-cli`, bin=`{ "nlc": "./bin/opencode" }`, `private:false`, version `1.0.0`, publishConfig public, repo/homepage set. (No code imports the package by name, so the rename is safe.)
+
+## Remaining (run on a machine with bun + npm login)
 
 1. **Rebrand the CLI package** — in `packages/opencode/package.json`:
    - `"name": "nlc-cli"`

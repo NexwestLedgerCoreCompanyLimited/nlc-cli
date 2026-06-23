@@ -1,10 +1,15 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "version": "1.17.9",
-  "name": "opencode",
+  "version": "1.0.0",
+  "name": "nlc-cli",
+  "description": "NLC AI X OddsForge — multi-model AI in your terminal (chat, web browsing, MCP tools).",
+  "homepage": "https://oddsforge.org",
+  "repository": { "type": "git", "url": "https://github.com/NexGerCore/nlc-cli" },
+  "keywords": ["ai", "llm", "cli", "tui", "nlc", "oddsforge", "openai", "anthropic"],
   "type": "module",
   "license": "MIT",
-  "private": true,
+  "private": false,
+  "publishConfig": { "access": "public" },
   "scripts": {
     "typecheck": "tsgo --noEmit",
     "test": "bun test --timeout 30000 --only-failures",
@@ -16,7 +21,7 @@
     "dev:temporary": "bun run --conditions=browser ./src/temporary.ts"
   },
   "bin": {
-    "opencode": "./bin/opencode"
+    "nlc": "./bin/opencode"
   },
   "exports": {
     "./*": "./src/*.ts"
